@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <!-- ICON start -->
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/icon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/icon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/icon/favicon-16x16.png">
+  <link rel="icon" href="/static/favicon.ico">
+  <link rel="manifest" href="/static/icon/site.webmanifest">
+  <link rel="mask-icon" href="/static/icon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <!-- ICON end -->
+
+
+  <!-- MDUI CSS -->
+  <link rel="stylesheet" href="https://js-457d9eeb-fcfe-4d6e.dayi.cool/npm/mdui@1.0.2/dist/css/mdui.min.css" />
+  <title>文件目录</title>
+  <!-- MDUI CSS -->
+</head>
+
+<body>
+  <!-- <h1>Hello, world!</h1> -->
+
+  <div class="mdui-appbar">
+    <div class="mdui-toolbar mdui-color-indigo">
+      <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+      <a href="javascript:" class="mdui-typo-headline">用户管理(实验性功能)</a>
+      <a href="javascript:" class="mdui-typo-title">手动切换用户</a>
+      <div class="mdui-toolbar-spacer"></div>
+      <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>
+      <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>
+      <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+    </div>
+  </div>
+
+
+  <div class="mdui-container">
+    <div class="mdui-textfield">
+      <label class="mdui-textfield-label">需要切换到的用户:</label>
+      <input class="mdui-textfield-input" name="name" type="text" id="dayi_switch_user" placeholder="big-big-big-big-xxx-xxx-xxx-xxx-xxx-6666"><br>
+
+      <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="change_user()">切换用户</button>
+    </div>
+    <br>
+    <div class="mdui-typo">
+      <pre id="dayi_for_debug_info">这里是调试信息:<br></pre>
+    </div>
+    <br><br><br><br>
+    <div class="mdui-container-fluid">
+      工具栏（又不是不能用.jpg）:
+      <br>
+
+      <a href="/" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple">回到主页</button>
+      </a>
+
+      <a href="/tree/showme.php" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple">点我查看服务器文件</button>
+      </a>
+      <a> </a>
+      <a href="/showfiles" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple" id="shamate"><b>自助管理/删除上传的文件</b></button>
+      </a>
+      <a> ←dayi写了好久好久最后实现的功能，真的写吐了 <a>
+    </div>
+
+  </div>
+
+
+
+
+  <!-- MDUI JavaScript -->
+  <script src="https://js-457d9eeb-fcfe-4d6e.dayi.cool/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+
+  <script>
+
+    async function log_it(str) {
+      t = document.getElementById('dayi_for_debug_info')
+      now_time = new Date(Date.now()).toLocaleTimeString({})
+      t.innerHTML += `[${(now_time)}]` + str + '\n';
+    }
+    async function test_login() {
+      try {
+        const response = await fetch('/api/wanna_login', { method: 'GET' });
+        const data_json = await response.json();
+        return data_json;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    async function log_login_info(login_res) {
+      if (login_res['code'] == 201) {
+        log_it(`当当，登录成功!`)
+        log_it(`当前用户名:${login_res['logged_in_user_name']}`)
+        // log_it(`这个用户名是你的上传秘钥（存在你当前的浏览器里），不要泄露哦`)
+      }
+      if (login_res['code'] == 401) {
+        log_it(`已经登录过啦`)
+        log_it(`当前用户名:${login_res['logged_in_user_name']}`)
+        // log_it(`这个用户名是你的上传秘钥（存在你当前的浏览器里），不要泄露哦`)
+      }
+      if (login_res['code'] == 411) {
+        log_it(`你之前的登录信息不合法，我帮你新生成啦一个`)
+        log_it(`新的用户名:${login_res['logged_in_user_name']}`)
+        // log_it(`这个用户名是你的上传秘钥（存在你当前的浏览器里），不要泄露哦`)
+      }
+    }
+
+    async function auto_login() {
+
+      // log_it('这个目录是包含【文件夹】的，不带扩展名的就是文件夹啦')
+      // log_it('正在展示文件目录')
+      try {
+        const res_login = await test_login();
+        await log_login_info(res_login)
+        return res_login
+      } catch (error) {
+        console.error(error);
+      }
+      // log_it('后期可能会添加 合并用户之类的功能,大家如果有其他方面的需求和建议也可以跟dayi说哦')
+    }
+
+    log_it('由于重构了整个项目，所以如果遇到bug，请及时联系dayi')
+    log_it('【实验性功能】：意味着，该功能【可能会出现bug，问题】如果遇到问题，请及时反馈')
+    log_it('如果还需要当前浏览器登录的用户，请您先记一下当前的用户名，切换后不会保留当前浏览器登录的用户名')
+    auto_login()
+
+    mdui.dialog({
+      title: '【实验性功能】',
+      content: '意味着，该功能【可能会出现bug，问题】，<font color=red>可能会出现意料之外的事情</font>'
+    })
+    // mdui.alert('content', 'title');
+
+
+    async function change_user() {
+      new_user_name = document.getElementById('dayi_switch_user').value.trim()
+
+
+      log_it(`正在获取并检查当前用户是否合法..`)
+      old_user_name_res = await test_login();
+      old_user_name = old_user_name_res['logged_in_user_name']
+      log_it(`老的用户名:${old_user_name}`)
+      log_it(`正在尝试切换用户名到:${new_user_name}`)
+      // console.log(new_user_name)
+      setCookie('dayi-cookie-for-uploads', new_user_name, 150)
+      log_it(`已切换`)
+      log_it(`当前用户:${getCookie('dayi-cookie-for-uploads')}`)
+      log_it(`正在测试新用户名是否合法..`)
+      res = await test_login()
+      if (res['code'] != 401) {
+        log_it(`新用户名不合法`)
+        log_it(`正在回退操作`)
+        setCookie('dayi-cookie-for-uploads', old_user_name, 150)
+        log_it(`当前用户:${getCookie('dayi-cookie-for-uploads')}`)
+        log_it(`正在测试新用户名是否合法..`)
+        res = await test_login()
+        if (res['code'] != 411) {
+          log_it('老的也不合法，我帮你申请个新的吧')
+          auto_login()
+        }
+      }
+      log_it(`新用户名合法!`)
+      log_login_info(res)
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      var expires = "expires=" + d.toGMTString();
+      document.cookie = cname + "=" + cvalue + "; " + expires;
+    }
+    function getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+      }
+      return "";
+    }
+
+
+  </script>
+
+
+</body>
+
+</html>
+
+</body>
+
+</html>

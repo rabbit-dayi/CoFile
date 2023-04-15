@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <!-- MDUI CSS -->
+  <link rel="stylesheet" href="https://js-457d9eeb-fcfe-4d6e.dayi.cool/npm/mdui@1.0.2/dist/css/mdui.min.css" />
+  <title>ADMIN</title>
+  <!-- MDUI CSS -->
+</head>
+
+<body>
+  <!-- <h1>Hello, world!</h1> -->
+
+  <div class="mdui-appbar">
+    <div class="mdui-toolbar mdui-color-indigo">
+      <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+      <a href="javascript:" class="mdui-typo-headline">MDUI</a>
+      <a href="javascript:" class="mdui-typo-title">ADMIN</a>
+      <div class="mdui-toolbar-spacer"></div>
+      <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>
+      <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>
+      <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+    </div>
+  </div>
+
+
+  <br>
+  <div class="mdui-typo">
+    <pre id="dayi_for_debug_info">这里是调试信息:<br></pre>
+  </div>
+
+  <div class="mdui-container">
+    工具栏（有点简陋）:
+    <br>
+
+    <a href="/" target="_blank">
+      <button class="mdui-btn mdui-btn-raised mdui-ripple">回到主页</button>
+    </a>
+
+    <a href="./tree/showme.php" target="_blank">
+      <button class="mdui-btn mdui-btn-raised mdui-ripple">点我查看服务器文件</button>
+    </a>
+    <a>       </a>
+    <a href="./showfiles" target="_blank">
+      <button class="mdui-btn mdui-btn-raised mdui-ripple" id="shamate" ><b>自助管理/删除上传的文件</b></button>
+    </a>
+    <a > ←dayi写了好久好久最后实现的功能，真的写吐了 <a>
+  </div>
+
+  <script>
+    async function log_it(str) {
+      t = document.getElementById('dayi_for_debug_info')
+      now_time = new Date(Date.now()).toLocaleTimeString({})
+      t.innerHTML += `[${(now_time)}]` + str + '\n';
+    }
+    async function fetch_tree() {
+      try {
+        const response = await fetch('/admin_big_bunny_rabbit/statistics.php', { method: 'GET' });
+        const data = await response.text();
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    async function auto_login() {
+      log_it('由于重构了整个项目，所以如果遇到bug，请及时联系dayi')
+      log_it('正在展示文件目录')
+      try {
+        const res_tree = await fetch_tree();
+        log_it('\n'+res_tree);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    auto_login()
+
+  </script>
+
+  <!-- MDUI JavaScript -->
+  <script src="https://js-457d9eeb-fcfe-4d6e.dayi.cool/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+</body>
+
+</html>
+
+</body>
+
+</html>

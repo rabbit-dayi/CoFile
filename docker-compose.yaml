@@ -1,0 +1,24 @@
+version: '3'
+services:
+  dayi_node_upload:
+    image: node:16.19-alpine3.16
+    networks:
+      - dayi_net_docker
+    working_dir: /opt/dayi
+    command: [ "sh", "/opt/dayi/entrypoint.sh" ]
+    volumes:
+      - ./:/opt/dayi/project
+      - ./entrypoint.sh:/opt/dayi/entrypoint.sh
+    ports:
+      - 3000:3000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always 
+    
+
+networks:
+  dayi_net_docker:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.233.0/24

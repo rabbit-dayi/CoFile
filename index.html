@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <!-- ICON start -->
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/icon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/icon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/icon/favicon-16x16.png">
+  <link rel="icon" href="/static/favicon.ico">
+  <link rel="manifest" href="/static/icon/site.webmanifest">
+  <link rel="mask-icon" href="/static/icon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <!-- ICON end -->
+  
+
+  <!-- MDUI CSS -->
+  <link rel="stylesheet" href="https://js-457d9eeb-fcfe-4d6e.dayi.cool/npm/mdui@1.0.2/dist/css/mdui.min.css"
+     crossorigin="anonymous" />
+  <title>作业提交</title>
+</head>
+
+
+<body class="mdui-appbar-with-toolbar">
+
+  <style>
+    /* body {
+      font-family: "jf-openhuninn-1.1";
+      src: url("https://cdn.jsdelivr.net/gh/rabbit-dayi/crispy-invention@main/jf-openhuninn-1.1.subset.woff2")  format("woff2");
+    } */
+  </style>
+
+  <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide">
+    <div class="mdui-toolbar mdui-color-indigo">
+
+      <a href="javascript:;" class="mdui-typo-headline">ovo</a>
+      <a href="javascript:;" class="mdui-typo-title">作业提交</a>
+      <div class="mdui-toolbar-spacer"></div>
+    </div>
+  </div>
+
+  <div class="mdui-typo">
+  </div>
+  <div class="mdui-container">
+
+
+    <form action="./lib/upload_files/upload_files.php" method="post" enctype="multipart/form-data">
+      <div class="mdui-textfield">
+        <label class="mdui-textfield-label">这里填你的班级名字学号: </label>
+        <label class="mdui-textfield-label">如果你有多个文件，就多次上传就可以</label>
+        <label class="mdui-textfield-label">如果文件上传错了，请联系咱进行删除。</label>
+      </div>
+
+
+      <!-- </div> -->
+
+      <div class="mdui-textfield">
+        <label class="mdui-textfield-label">真实姓名（君の大名）</label>
+        <input class="mdui-textfield-input" name="name" type="text" id="dayi-real-name" /><br>
+      </div>
+
+      <div class="mdui-textfield">
+        <label class="mdui-textfield-label" id="dayi-stu-num-label">学号</label>
+        <input class="mdui-textfield-input" name="stdnum" type="number" maxlength=12 minlength="12"
+          id="dayi-stu-num" /><br>
+      </div>
+
+      <label class="mdui-textfield-label">提交的作业</label>
+      <select name="dest_homework" class="dest_homework" id="dest_homework1" mdui-select>
+        <!-- <option value="网络攻防">网络攻防</option> -->
+        <option value="实验1">实验1</option>
+        <option value="实验2">实验2</option>
+        <option value="其他作业">其他作业</option>
+      </select>
+      <br><br><br>
+
+
+      <label class="mdui-textfield-label" id="dayi_class_select_label">班级</label>
+      <label class="mdui-textfield-label" id="dayi_class_msg"></label>
+      <!-- <input class="mdui-textfield-input" name="class_name" type="text" maxlength="10" minlength="4"/><br> -->
+      <select name="class_name" class="mdui-select" id="class_name"  >
+        <option value="网络">网络</option> 
+        <option value="其他">其他班级</option>
+      </select>
+      <select name="class_name2" class="mdui-select" id="class_name2"  >
+        <option value="21">21级</option>
+        <option value="22">22级</option>
+        <option value="20">20级</option>
+        <option value="19">19级</option>
+        <option value="233">其他班级</option>
+        <label class="mdui-textfield-label" id="dayi_class_msg"></label>
+      </select>
+      <select name="class_name3" class="mdui-select" id="class_name3" >
+        <option value="1">1班</option>
+        <option value="2">2班</option>
+        <option value="3">3班</option>
+        <option value="4">4班</option>
+        <option value="5">5班</option>
+        <option value="6">6班</option>
+        <option value="233">其他班级</option>
+        <label class="mdui-textfield-label" id="dayi_class_msg"></label>
+      </select><br><br><br>
+
+
+      <label class="mdui-btn mdui-btn-raised" for="file">点这个选择文件</label>
+      <input class="mdui-btn" type="file" name="file" id="file"><br><br>
+
+      <!-- <input class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" type="submit" name="submit"
+        value="提交"> -->
+
+      <!-- 上传进度条-mdui -->
+      <!-- <div class="mdui-container mdui-p-t-5"> -->
+      <div class="mdui-progress">
+        <div class="mdui-progress-determinate" style="width: 0%;" id="dayi-progress"></div>
+      </div>
+      <br>
+      <a class="mdui-textfield" id="dayi-upload-text"></a><br> <br>
+      <!-- </div> -->
+
+
+      <input class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" type="submit" name="submit"
+        value="提交">
+
+
+
+
+
+      <progress max="" value=""></progress>
+      <div>
+        <progress class="mdui-progress-determinate" max="100" value="1"></progress>
+      </div>
+
+      <br>
+
+
+
+      <br><br>
+    </form>
+    <div class="mdui-container">
+      工具栏（又不是不能用.jpg）:
+      <br>
+      <a href="./tree/showme.php" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple">点我查看服务器文件</button>
+      </a>
+      <a> </a>
+      <a href="./showfiles" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple" id="shamate"><b>自助管理/删除上传的文件</b></button>
+      </a>
+      <a> ←dayi写了好久好久最后实现的功能，真的写吐了 <a>
+    </div>
+
+    <div>
+      <style></style>
+      <a id="dayi-upload-finsh-html2"></a>
+    </div>
+
+    <!-- 调试信息 -->
+    <br>
+    <div class="mdui-typo">
+      <pre id="dayi_for_debug_info">这里是调试信息:<br></pre>
+    </div>
+    <!-- 调试信息 -->
+
+
+  </div>
+
+
+  <br><br>
+
+
+
+  <!-- MDUI JavaScript -->
+  <script src="https://js-457d9eeb-fcfe-4d6e.dayi.cool/npm/mdui@1.0.2/dist/js/mdui.min.js"
+    
+    crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    function copy() {
+      var e = document.getElementById("copy233");
+      e.select(); // 选择对象
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      alert("复制成功！(命令发过去了，qq可能会拦截复制到粘贴板）");
+    }
+  </script>
+
+  <!-- 前端js -->
+  <script>
+
+    var getRandomColor = function () {
+      return '#' + (Math.random() * 0xffffff << 0).toString(16);
+    }
+
+    function shamate_color() {
+
+      var box = document.getElementById("shamate");
+
+      box.style.color = getRandomColor();
+
+    }
+
+    setInterval("shamate_color()", 300);
+  </script>
+
+
+  <!-- 获得学号-start -->
+  <script type="text/javascript">
+    function $el(id) {
+      return document.getElementById(id);
+    }
+
+    function mdui_selete_update(str_id){
+      var $ = mdui.$;
+      var inst = mdui.Select(`#${str_id}`);
+      inst.handleUpdate();
+      // $('#demo').append('<option>new state</option>');
+      // inst.handleUpdate();
+    }
+
+    function query_num(query_name) {
+      $el("dayi-stu-num-label").innerHTML = "学号 | 正在尝试获取学号.."
+      var xmlhttp;
+      if (window.XMLHttpRequest) { xmlhttp = new XMLHttpRequest(); }
+      else { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+      // Response.AddHeader("Access-Control-Allow-Origin", "*");
+      res = ""
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          res = xmlhttp.responseText;
+          
+          isfailed = 0
+          failed_msg = ''
+
+          try{
+            res_json = JSON.parse(xmlhttp.responseText)
+          }
+          catch(err){
+            isfailed = 0
+            failed_msg = 'JSON解析失败'+err 
+          }
+          
+
+          if (res.toString().search("dayi") == -1) {
+            $el("dayi-stu-num-label").innerHTML = "学号 | <font color=\"green\">已经自动加载学号</font>";
+            $el("dayi_class_select_label").innerHTML = "班级 | <font color=\"green\">已经自动尝试选择班级</font>";
+            document.getElementById("class_name").value = res_json['data']['professional']
+            document.getElementById("class_name2").value = res_json['data']['grade']
+            document.getElementById("class_name3").value = res_json['data']['class']
+            $el("dayi-stu-num").value = res_json['data']['stu_num']
+
+          }
+          else {
+            $el("dayi-stu-num").value = -1
+            $el("dayi-stu-num-label").innerHTML = "学号 | 获取学号失败，请手动输入"
+          }
+
+          return res;
+        }
+      }
+      xmlhttp.open("GET", "https:// get_the_stunum.php?query_name=" + query_name, true);
+      xmlhttp.send();
+      return res;
+    }
+
+    $el("dayi-real-name").onkeyup = function () {
+      if (1) {
+        res = query_num(this.value)
+      }
+      else {
+      }
+    };
+  </script>
+  <!-- 获得学号-end -->
+
+
+
+  <!-- 下面是获得进度条的js -->
+  <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script>
+    $('form').on('submit', function (e) {
+      e.preventDefault();  // 阻止表单跳转
+      let fd = new FormData(this);  //获取表单数据
+      $.ajax({
+        type: 'POST',
+        url: './file_upload',
+        // url接口  注意表单的name属性是按照接口文档命名的
+        data: fd, //  前面用FormData 收集的数据
+        // dataType:'json',  //预期服务器返回数据类型   返回格式为josn
+        contentType: false, // 不要将数据转为查询字符串  因为我们得到的是对象
+        processData: false,  // 不要设置请求头
+        xhr: function () {   // 配置进度条
+          let xhr = new XMLHttpRequest();
+          if (xhr.upload) {
+            xhr.upload.addEventListener('progress', jdt, false); // jdt 为调用函数
+          }
+          return xhr;  //xhr对象返回给jQuery使用
+        },
+        success: function (res) {  // 请求成功之后处理函数
+          // console.log(res);
+          out_str = '默认信息，如果你看到了这句话，说明出现了未知错误，也许你应该检查下你的网络？'
+          title_str = '上传信息'
+
+          try {
+            res_json = JSON.parse(res)
+            json_str = JSON.stringify(JSON.parse(res))
+
+            out_str = '代码:' + res_json['code'] + '<br>\n'
+            out_str += '<font color=\"green\"> 信息:<br>\n' + res_json['info'] + '</font>\n'
+
+            title_str = res_json['code'] == 201 ? '<font color=\"green\"><b>成功啦 </b></font>' : '<font color=\"red\"> 发生了错误</font>'
+            console.log(res_json)
+            // out_str = json_str
+          } catch {
+            title_str = '发生了严重的BUG'
+            out_str = '[dayi-err]:发生了未知错误，我也不知道是否上传成功，bug出现了，请将此错误信息截图反馈一下下，谢谢你。错误信息:'
+            out_str += res
+          }
+
+
+
+          mdui.alert(out_str, title_str, function () {
+            document.getElementById("dayi-upload-finsh-html2").innerHTML = out_str;
+            document.getElementById("dayi-upload-finsh-html2").innerHTML += '<font color=\"orange\">如果需要删除文件请点击下面的杀马特按钮，或者联系dayi</font>'
+          });
+        },
+        error: function (jqXHR, errorThrown, textStatus) {
+          out_str = '请求失败，也许你应该查看控制台信息，请将错误信息反馈给dayi。错误信息:' + jqXHR.responseText;
+          title_str = '发生了严重错误'
+          mdui.alert(out_str, title_str, function () {
+            document.getElementById("dayi-upload-finsh-html2").innerHTML = out_str;
+          });
+        },
+        beforesend: function () { }, // 请求之前触发函数
+        complete: function () { },   // 请求响应结束之后触发  无论请求成功失败
+      })
+    })
+    // 进度条数据执行方法
+    function jdt(e) {
+      // 获取进度条标签里面的相关属性并且赋值
+      $('progress').attr('max', e.total);  // 总大小
+      $('progress').attr('value', e.loaded); // 已经上传大小
+
+      percent = e.loaded / e.total * 100;
+      mdui_progress = document.getElementById("dayi-progress")
+      mdui_progress.style = "width:" + percent + "%"
+
+      doc_res = (e.loaded / 1024).toFixed(2) + "kB/" + (e.total / 1024).toFixed(2) + "kB";
+      if (e.loaded == e.total) doc_res += ' <font color=\"green\">表单上传完成，等待服务器相应，稍后有弹窗</font>'
+
+      document.getElementById("dayi-upload-text").innerHTML = doc_res;//文字进度
+
+    }
+
+
+    async function log_it(str) {
+      t = document.getElementById('dayi_for_debug_info')
+      now_time = new Date(Date.now()).toLocaleTimeString({})
+      t.innerHTML += `[${(now_time)}]` + str + '\n';
+    }
+    async function auto_login_() {
+      return new Promise((resolve, reject) => fetch('/api/wanna_login', { method: 'GET' })
+        .then(
+          response => {
+            if (response.ok) {
+              response => response.json()
+              return response.json()
+            } else {
+              resolve(undefined)
+            }
+          }
+        )
+        .then(
+          res => {
+            resolve(res)
+          }
+        ))
+    }
+    async function auto_login() {
+      log_it('由于重构了整个项目，如果遇到bug，请及时联系dayi')
+      log_it('正在尝试自动登录...')
+      try {
+        login_res = await auto_login_()
+      }
+      catch (error) {
+
+      }
+      if (login_res == undefined) {
+        log_it(`登录失败`)
+        log_it(`进入普通上传模式`)
+      }
+
+      if (login_res['code'] == 201) {
+        log_it(`当当，登录成功!`)
+        log_it(`当前用户名:${login_res['logged_in_user_name']}`)
+        log_it(`这个用户名是你的上传秘钥（存在你当前的浏览器里），不要泄露哦`)
+      }
+      if (login_res['code'] == 401) {
+        log_it(`已经登录过啦`)
+        log_it(`当前用户名:${login_res['logged_in_user_name']}`)
+        log_it(`这个用户名是你的上传秘钥（存在你当前的浏览器里），不要泄露哦`)
+      }
+      if (login_res['code'] == 411) {
+        log_it(`你之前的登录信息不合法，我帮你新生成啦一个`)
+        log_it(`新的用户名:${login_res['logged_in_user_name']}`)
+        log_it(`这个用户名是你的上传秘钥（存在你当前的浏览器里），不要泄露哦`)
+      }
+
+      await log_it('登录结果:' + JSON.stringify(login_res))
+      
+      console.log(t.innerHTML)
+    }
+    auto_login()
+
+  </script>
+
+</body>
+
+</html>

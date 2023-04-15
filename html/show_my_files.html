@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    
+     <!-- ICON start -->
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/icon/favicon-16x16.png">
+    <link rel="icon" href="/static/favicon.ico">
+    <link rel="manifest" href="/static/icon/site.webmanifest">
+    <link rel="mask-icon" href="/static/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <!-- ICON end -->
+    
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://js-457d9eeb-fcfe-4d6e.dayi.cool/npm/mdui@1.0.2/dist/css/mdui.min.css"/>
+    <title>文件管理！</title>
+    <!-- MDUI CSS -->
+  </head>
+  <body>
+    <!-- <h1>Hello, world!</h1> -->
+
+    <div class="mdui-appbar">
+      <div class="mdui-toolbar mdui-color-indigo">
+        <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+        <a href="javascript:" class="mdui-typo-headline">MDUI</a>
+        <a href="javascript:" class="mdui-typo-title">←这些按钮是装饰物→</a>
+        <div class="mdui-toolbar-spacer"></div>
+        <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>
+        <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>
+        <a href="javascript:" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+      </div>
+    </div>
+
+    
+    <div>
+      <ul id="file-container" class="mdui-list">
+        
+      </ul>
+    </div>
+    <br><br><br><br><br>
+    <div class="mdui-container-fluid">
+      <p> 工具栏（又不是不能用.jpg）:</p>
+      <br>
+  
+      <a href="/" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple">回到主页</button>
+      </a>
+  
+      <a href="/tree/showme.php" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple">点我查看服务器文件</button>
+      </a>
+      <a>       </a>
+      <a href="/showfiles" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple" id="shamate" ><b>自助管理/删除上传的文件</b></button>
+      </a>
+      <a > ←dayi写了好久好久最后实现的功能，真的写吐了 <a>
+
+    </div>
+    <div class="mdui-container-fluid">
+      <br>
+     <p> 实验性功能（测试中的功能,可能出现bug，不太建议使用）</p>
+      <a href="/user" target="_blank">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple" ><b>切换用户（测试功能）</b></button>
+      </a>
+    </div>
+    
+    <script>
+      function delete_file(file_uuid){
+        fetch('/api/delete_file?uuid='+file_uuid,{
+          method: 'GET',
+        }).then(response => response.json())
+        .then(the_json=>{
+          alert_info = `代码:${the_json['code']} <br> <font color=green>提示信息:<br>${the_json['debug']['info']}</font>`
+//JSON.stringify(the_json)
+          mdui.alert(alert_info,'提示（点确定之后记得刷新下网页哦）',function() {
+            // var element = document.getElementById("file-container");//清空容器
+            //     element.parentNode.removeChild(element);//清空容器
+            //     r = init()
+            // location.reload();
+          });
+          console.log(the_json)
+        })
+        .then(the_json =>{
+          
+        })
+      }
+
+      function download_file(file_uuid){
+
+        url  = '/api/download_file?uuid='+file_uuid
+         window.open(url,'_blank'); 
+        // fetch(,{
+        //   method: 'GET',
+        // }).then(response => response.json())
+        // .then(the_json=>{
+
+          
+        //   console.log(the_json)
+        // })
+        // .then(the_json =>{
+          
+        // })
+      }
+
+      function init(){
+        // 获取文件容器元素
+      const fileContainer = document.getElementById('file-container');
+      
+  
+      // 使用 fetch 函数调用后端接口获取用户文件信息
+      fetch('/api/get_user_files')
+        .then(response => response.json())
+        .then(files => {
+          console.log(files)
+
+          if(files['code']==211){
+            const fileElement = document.createElement('div');
+            fileElement.innerHTML = `
+            <li class="mdui-list-item mdui-ripple">
+              <i class="mdui-list-item-icon mdui-icon material-icons">error</i>
+              <div class="mdui-list-item-content">${files.info}</div>
+              
+              <a>
+              如果找不到你滴文件:很有可能你用的不同的浏览器打开的这个网页啦,试试换为上传时候的浏览器或者联系dayi</a>
+            </li>
+            `
+            fileContainer.appendChild(fileElement);
+            // return
+          }
+
+          if(files['code']==401){
+            const fileElement = document.createElement('div');
+            fileElement.innerHTML = `
+            <li class="mdui-list-item mdui-ripple">
+              <i class="mdui-list-item-icon mdui-icon material-icons">error</i>
+              <div class="mdui-list-item-content">发生了错误: ${files.info}  你可能没有正常登录 
+              </div>
+            </li>
+            `
+            fileContainer.appendChild(fileElement);
+            return
+          }
+          
+          const fileElement = document.createElement('div');
+          fileElement.innerHTML = `
+          <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">error</i>
+            <div class="mdui-list-item-content">当前登录用户: ${files.logged_in_user_name} <br>
+            请注意，该用户名同时作为秘钥使用，如果泄露，他人可以删除您的文件<br>
+            <br><font color=green>为了避免其他人删除你滴文件，先这么做的逻辑:登录信息存储在:<b>浏览器</b>中,并与域名绑定,也就是cookie</font><br>
+            下面这些删除按钮点一下就会直接删掉你的文件，对，没有二次确认 <br>
+            
+            </div>
+          </li>
+          `
+          fileContainer.appendChild(fileElement);
+
+          
+
+          
+
+          // 遍历用户文件信息，并将其显示在 div 元素中
+          for (const file of files.data) {
+            if(file==null)continue
+            
+            const fileElement = document.createElement('div');
+            fileElement.innerHTML = `
+            <li class="mdui-list-item mdui-ripple">
+              <i class="mdui-list-item-avatar mdui-icon material-icons">assignment</i>
+              <div class="mdui-list-item-content">
+                <h3>文件名:${file.file_name}</h3>
+                <h3>文件路径:${file.file_path}</h3>
+                <p>文件大小:${file.file_size} bytes<p>
+                <p>文件唯一ID:${file.uuid}</p>
+                <p>文件所属用户:${file.user_name}</p>
+
+                
+                  <i class="mdui-list-item-icon mdui-icon material-icons">delete</i>
+                  <button onclick="delete_file('${file.uuid}')" class="mdui-btn mdui-btn-raised">删除</button>
+                  
+
+                  <i class="mdui-icon material-icons">&#xe2c4;</i>
+                  <button onclick="download_file('${file.uuid}')" class="mdui-btn mdui-btn-raised">下载文件</button>
+          </li>
+        `;
+            fileContainer.appendChild(fileElement);
+          }
+        });
+      }
+      init()
+    </script>
+
+    <!-- MDUI JavaScript -->
+    <script src="https://js-457d9eeb-fcfe-4d6e.dayi.cool/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+  </body>
+</html>
+  
+</body>
+
+</html>
